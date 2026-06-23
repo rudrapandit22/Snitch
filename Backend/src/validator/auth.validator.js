@@ -38,6 +38,7 @@ export const validateloginuser = [
     body("email")
         .isEmail().withMessage("Invalid email format"),
     body("password")
-        .isEmail().withMessage("Invalid Password format"),
+        .notEmpty().withMessage("Password is required")
+        .isLength({ min: 8 }).withMessage("Password must be at least 8 characters long"),
     validaterequest
 ]
