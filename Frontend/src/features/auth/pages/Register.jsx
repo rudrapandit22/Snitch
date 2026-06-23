@@ -216,6 +216,10 @@ const Register = () => {
             </label>
           </div>
 
+          <a href="http://localhost:3000/api/auth/google" className='text-sm text-[#000000] group-hover:bg-yellow-300'>Continue with google</a>
+                <br />
+
+
           {/* Submit Button */}
           <button
             type="submit"
