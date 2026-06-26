@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
 import { useauth } from '../hook/useAuth.js';
+import { useNavigate } from 'react-router';
+import ContinuewithGoogle from '../components/ContinuewithGoogle.jsx';
 
 const Register = () => {
   const { handleregister, loading, error } = useauth();
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     fullname: '',
     contact: '',
@@ -52,14 +55,7 @@ const Register = () => {
     });
 
     if (result.success) {
-      setSuccessMsg('Account created successfully! You are now logged in.');
-      setFormData({
-        fullname: '',
-        contact: '',
-        email: '',
-        password: '',
-        isSeller: false,
-      });
+      navigate('/');
     }
   };
 
@@ -216,8 +212,14 @@ const Register = () => {
             </label>
           </div>
 
-          <a href="http://localhost:3000/api/auth/google" className='text-sm text-[#000000] group-hover:bg-yellow-300'>Continue with google</a>
-                <br />
+          {/* OR Divider */}
+          <div className="flex items-center my-4 gap-3">
+            <div className="flex-1 h-px bg-[#E6E1D8]" />
+            <span className="text-[#9C9188] text-[11px] font-semibold uppercase tracking-widest">or</span>
+            <div className="flex-1 h-px bg-[#E6E1D8]" />
+          </div>
+
+          <ContinuewithGoogle/>
 
 
           {/* Submit Button */}

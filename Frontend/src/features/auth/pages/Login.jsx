@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
 import { useauth } from '../hook/useAuth.js';
+import { useNavigate } from 'react-router';
+import ContinuewithGoogle from '../components/ContinuewithGoogle';
 
 const Login = () => {
   const { handlelogin, loading, error } = useauth();
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -42,7 +45,7 @@ const Login = () => {
     });
 
     if (result.success) {
-      setSuccessMsg('Logged in successfully! Welcome back.');
+      navigate('/');
     }
   };
 
@@ -169,6 +172,15 @@ const Login = () => {
               'Log In'
             )}
           </button>
+
+          {/* OR Divider */}
+          <div className="flex items-center my-4 gap-3">
+            <div className="flex-1 h-px bg-[#E6E1D8]" />
+            <span className="text-[#9C9188] text-[11px] font-semibold uppercase tracking-widest">or</span>
+            <div className="flex-1 h-px bg-[#E6E1D8]" />
+          </div>
+
+          <ContinuewithGoogle />
         </form>
 
         {/* Footer */}
