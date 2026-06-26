@@ -1,5 +1,4 @@
 import mongoose from "mongoose"
-import bcrypt from "bcryptjs"
 
 const productSchema = new mongoose.Schema({
     title:{
@@ -26,12 +25,12 @@ const productSchema = new mongoose.Schema({
             default:"INR"
         }
     },
-    images:{
+    images:[{
         url:{
             type:String,
             required:true
         },
-    },
+    }],
 
 },{timestamps:true}
 )
