@@ -4,8 +4,9 @@ import { useNavigate } from 'react-router';
 import ContinuewithGoogle from '../components/ContinuewithGoogle.jsx';
 
 const Register = () => {
-  const { handleregister, loading, error } = useauth();
+  const { handleregister, error } = useauth();
   const navigate = useNavigate();
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     fullname: '',
     contact: '',
@@ -46,6 +47,7 @@ const Register = () => {
       return;
     }
 
+    setIsSubmitting(true);
     const result = await handleregister({
       fullname: formData.fullname,
       contact: formData.contact,
@@ -53,9 +55,15 @@ const Register = () => {
       password: formData.password,
       isSeller: formData.isSeller,
     });
+    setIsSubmitting(false);
 
     if (result.success) {
-      navigate('/');
+      // Redirect based on role
+      if (result.user?.role === 'seller') {
+        navigate('/seller/dashboard');
+      } else {
+        navigate('/');
+      }
     }
   };
 
@@ -225,10 +233,10 @@ const Register = () => {
           {/* Submit Button */}
           <button
             type="submit"
-            disabled={loading}
+            disabled={isSubmitting}
             className="w-full bg-[#1C1917] hover:bg-[#2C2927] text-white font-semibold py-3.5 px-4 rounded-xl shadow-md transition-all duration-200 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed text-center select-none mt-2"
           >
-            {loading ? (
+            {isSubmitting ? (
               <div className="flex items-center justify-center space-x-2">
                 <svg className="animate-spin h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />

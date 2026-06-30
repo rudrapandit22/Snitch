@@ -18,3 +18,14 @@ export async function login({email,password}){
     })
     return response.data
 }
+
+export async function getMe(){
+    const response = await authapiinstance.get("/me")
+
+    return response.data 
+}
+
+export async function getallproducts(){
+    const response = await productapiinstance.get("/")
+    return response.data
+}

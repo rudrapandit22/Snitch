@@ -1,13 +1,20 @@
-import { createBrowserRouter } from "react-router"
+import { createBrowserRouter, Outlet } from "react-router"
 import Register from "../features/auth/pages/Register"
 import Login from "../features/auth/pages/Login"
 import CreateProduct from "../features/products/pages/createproduct"
 import Dashboard from "../features/products/pages/Dashboard"
+import Protected from "../features/auth/components/Protected"
+import Home from "../features/products/pages/Home"
+import ProductDetails from "../features/products/pages/ProductDetails"
 
 export const routes = createBrowserRouter([
     {
         path: "/",
-        element: <h1>Hello world</h1>,
+        element: <Home />,
+    },
+    {
+        path: "/product/:productId",
+        element: <ProductDetails />,
     },
     {
         path: "/register",
@@ -19,15 +26,17 @@ export const routes = createBrowserRouter([
     },
     {
         path: "/seller",
-        children:[
+        element: <Outlet />,
+        children: [
             {
-                path:"/seller/create-product",
-                element:<CreateProduct/>
+                path: "/seller/create-product",
+                element: <Protected requiredRole="seller"><CreateProduct /></Protected>
             },
             {
-                path:"/seller/dashboard",
-                element:<Dashboard/>
+                path: "/seller/dashboard",
+                element: <Protected requiredRole="seller"><Dashboard /></Protected>
             }
         ]
     }
 ])
+

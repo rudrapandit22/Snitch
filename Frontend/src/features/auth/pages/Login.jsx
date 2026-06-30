@@ -1,16 +1,19 @@
 import React, { useState } from 'react';
 import { useauth } from '../hook/useAuth.js';
 import { useNavigate } from 'react-router';
+import { useSelector } from 'react-redux';
 import ContinuewithGoogle from '../components/ContinuewithGoogle';
 
 const Login = () => {
-  const { handlelogin, loading, error } = useauth();
+  const { handlelogin, error } = useauth();
   const navigate = useNavigate();
+  const reduxUser = useSelector((state) => state.auth.user);
   const [formData, setFormData] = useState({
     email: '',
     password: '',
   });
   
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [successMsg, setSuccessMsg] = useState('');
   const [localError, setLocalError] = useState('');
@@ -31,7 +34,7 @@ const Login = () => {
     setLocalError('');
 
     if (!formData.email.trim()) {
-      setLocalError('Email or Username is required');
+      setLocalError('Email is required');
       return;
     }
     if (formData.password.length < 8) {
@@ -39,13 +42,24 @@ const Login = () => {
       return;
     }
 
+    setIsSubmitting(true);
     const result = await handlelogin({
       email: formData.email,
       password: formData.password,
     });
+    setIsSubmitting(false);
 
     if (result.success) {
-      navigate('/');
+      // Use the user returned directly from login API — role is guaranteed here
+      const role = result.user?.role;
+      console.log('Login success, role:', role, 'result.user:', result.user);
+      if (role === 'seller') {
+        navigate('/seller/dashboard');
+      } else {
+        navigate('/');
+      }
+    } else {
+      setLocalError(result.error || 'Login failed. Please try again.');
     }
   };
 
@@ -157,10 +171,10 @@ const Login = () => {
           {/* Submit Button */}
           <button
             type="submit"
-            disabled={loading}
+            disabled={isSubmitting}
             className="w-full bg-[#1C1917] hover:bg-[#2C2927] text-white font-semibold py-3.5 px-4 rounded-xl shadow-md transition-all duration-200 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed text-center select-none mt-4"
           >
-            {loading ? (
+            {isSubmitting ? (
               <div className="flex items-center justify-center space-x-2">
                 <svg className="animate-spin h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
