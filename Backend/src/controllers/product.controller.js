@@ -84,3 +84,33 @@ export async function getsellerproduct(req, res) {
         });
     }
 }
+
+export async function getallproducts(req,res){
+    const products =await productmodel.find()
+
+    return res.status(200).json({
+        message:"products fetched successfully",
+        success:true,
+        products
+    })
+}
+
+export async function getproductbyid(req, res) {
+    try {
+        const { productId } = req.params;
+        const product = await productmodel.findById(productId);
+        if (!product) {
+            return res.status(404).json({ success: false, message: "Product not found" });
+        }
+        res.status(200).json({
+            message: "Product fetched successfully",
+            success: true,
+            product
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: error.message
+        });
+    }
+}

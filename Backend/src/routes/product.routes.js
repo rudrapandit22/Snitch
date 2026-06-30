@@ -1,6 +1,6 @@
 import express from "express";
 import { authenticateSeller } from "../middlewares/auth.middle.js";
-import { createproduct, getsellerproduct, imagekitAuth } from "../controllers/product.controller.js";
+import { createproduct, getallproducts, getsellerproduct, imagekitAuth, getproductbyid } from "../controllers/product.controller.js";
 
 const router = express.Router();
 
@@ -11,5 +11,9 @@ router.get("/imagekit-auth", authenticateSeller, imagekitAuth);
 router.post("/", authenticateSeller, createproduct);
 
 router.get("/seller", authenticateSeller, getsellerproduct);
+
+router.get("/", getallproducts)
+
+router.get("/:productId", getproductbyid)
 
 export default router;
